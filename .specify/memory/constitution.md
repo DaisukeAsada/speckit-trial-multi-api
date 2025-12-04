@@ -1,50 +1,151 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+================================================================================
+SYNC IMPACT REPORT
+================================================================================
+Version Change: N/A → 1.0.0 (初回策定)
+
+Modified Principles: なし（初回策定）
+
+Added Sections:
+- Core Principles: 7原則を追加
+  - I. ユーザーインターフェース設計
+  - II. AIエージェント動作規約
+  - III. テスト駆動開発 (NON-NEGOTIABLE)
+  - IV. テストカバレッジ基準
+  - V. コメント規約
+  - VI. ドキュメント規約
+  - VII. コミット規約
+- 品質基準セクションを追加
+- 開発ワークフローセクションを追加
+
+Removed Sections: なし（初回策定）
+
+Templates Requiring Updates:
+- ✅ .specify/templates/plan-template.md - Constitution Check項目が原則に対応可能
+- ✅ .specify/templates/spec-template.md - ユーザーストーリーテスト形式が原則IIIと整合
+- ✅ .specify/templates/tasks-template.md - テストファースト記載が原則IIIと整合
+- ✅ .specify/templates/checklist-template.md - 汎用形式、原則適用可能
+- ✅ .specify/templates/agent-file-template.md - 汎用形式、原則適用可能
+
+Follow-up TODOs: なし
+================================================================================
+-->
+
+# Speckit Trial Multi-API Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. ユーザーインターフェース設計
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+ユーザーインターフェースは操作性を最優先とし、以下の原則に従って設計しなければならない:
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+- UIはシンプルで直感的な操作が可能でなければならない（MUST）
+- レイアウトは適切な情報階層を持ち、視覚的な混乱を避けなければならない（MUST）
+- 不要な要素を排除し、ユーザーが目的を達成するための最短経路を提供しなければならない（MUST）
+- レスポンシブデザインを採用し、様々な画面サイズに対応することが望ましい（SHOULD）
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+**根拠**: 複雑なUIはユーザーの生産性を低下させ、エラーを誘発する。シンプルさが操作効率とユーザー満足度の向上につながる。
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### II. AIエージェント動作規約
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+AIエージェントは以下の言語規約に従って動作しなければならない:
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- AIエージェントは内部思考・推論を英語で行わなければならない（MUST）
+- AIエージェントはユーザーへの回答を日本語で提供しなければならない（MUST）
+- 技術用語は適切な日本語訳がある場合は日本語を使用し、ない場合は英語のまま使用してもよい（MAY）
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+**根拠**: 英語での思考は技術ドキュメントやコード参照との整合性を保ち、日本語での回答はユーザーの理解を促進する。
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### III. テスト駆動開発 (NON-NEGOTIABLE)
+
+機能開発においてテストファースト原則を厳守しなければならない:
+
+- 新規機能を実装する前に、対応するユニットテストを作成しなければならない（MUST）
+- テストが失敗することを確認してから実装を開始しなければならない（MUST）
+- すべてのテストがパスすることを機能完了の必須条件としなければならない（MUST）
+- Red-Green-Refactorサイクルを厳格に遵守しなければならない（MUST）
+
+**根拠**: テストファースト開発はバグの早期発見、設計品質の向上、リファクタリングの安全性を保証する。
+
+### IV. テストカバレッジ基準
+
+コードベースのテストカバレッジは以下の基準を満たさなければならない:
+
+- テストカバレッジは80%以上を維持しなければならない（MUST）
+- 新規コードは80%以上のカバレッジを達成しなければならない（MUST）
+- クリティカルなビジネスロジックは90%以上のカバレッジを目指すべきである（SHOULD）
+- カバレッジが基準を下回る場合、PRのマージを許可してはならない（MUST NOT）
+
+**根拠**: 高いテストカバレッジはコードの信頼性を保証し、リグレッションの防止に寄与する。
+
+### V. コメント規約
+
+コードおよび設定ファイルのコメントは以下の規約に従わなければならない:
+
+- ソースコードのコメントは日本語で記載しなければならない（MUST）
+- 設定ファイル（YAML、JSON、TOML等）のコメントは日本語で記載しなければならない（MUST）
+- コメントは「なぜ」を説明し、コードが説明する「何を」を重複しないようにすべきである（SHOULD）
+- 複雑なロジックには必ず説明コメントを付与しなければならない（MUST）
+
+**根拠**: 日本語コメントはチームメンバーの理解を促進し、コードの保守性を向上させる。
+
+### VI. ドキュメント規約
+
+プロジェクトドキュメントは以下の規約に従わなければならない:
+
+- README、設計ドキュメント、APIドキュメントは日本語で記載しなければならない（MUST）
+- 技術仕様書は日本語で記載しなければならない（MUST）
+- ユーザー向けドキュメントは日本語で記載しなければならない（MUST）
+- 国際的なOSSへの貢献が必要な場合のみ英語ドキュメントを作成してもよい（MAY）
+
+**根拠**: 日本語ドキュメントはチーム内の情報共有を円滑化し、新規メンバーのオンボーディングを支援する。
+
+### VII. コミット規約
+
+すべてのコミットメッセージはConventional Commits仕様に準拠しなければならない:
+
+- コミットメッセージは `<type>(<scope>): <description>` 形式に従わなければならない（MUST）
+- 許可されるtype: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
+- scopeは影響を受けるモジュールまたは機能を示すべきである（SHOULD）
+- descriptionは命令形で記載しなければならない（MUST）
+- 破壊的変更は `!` を付与し、フッターに `BREAKING CHANGE:` を記載しなければならない（MUST）
+
+**根拠**: 統一されたコミット形式は変更履歴の追跡を容易にし、自動リリースノート生成やセマンティックバージョニングを支援する。
+
+## 品質基準
+
+プロジェクトは以下の品質基準を維持しなければならない:
+
+- **コード品質**: リンターおよびフォーマッターを使用し、一貫したコードスタイルを維持する
+- **セキュリティ**: 依存関係の脆弱性スキャンを定期的に実施する
+- **パフォーマンス**: 性能要件を満たすことを検証するベンチマークを実施する
+- **アクセシビリティ**: UIはWCAGガイドラインに準拠することを目指す
+
+## 開発ワークフロー
+
+開発は以下のワークフローに従って進めなければならない:
+
+1. **仕様策定**: ユーザーストーリーと受け入れ条件を定義する
+2. **テスト作成**: 受け入れ条件に基づくテストを作成する
+3. **実装**: テストがパスするまで実装を進める
+4. **レビュー**: コードレビューを実施し、原則への準拠を確認する
+5. **マージ**: すべてのチェックがパスした後にマージする
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+本Constitutionはプロジェクトにおける最上位の規約として位置づけられ、すべての開発活動はこれに準拠しなければならない。
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+### 改定手続き
+
+- Constitutionの改定は文書化され、チームの承認を得なければならない（MUST）
+- 破壊的変更（原則の削除・根本的変更）はMAJORバージョンを更新しなければならない（MUST）
+- 原則の追加・拡張はMINORバージョンを更新しなければならない（MUST）
+- 誤字・表現の明確化はPATCHバージョンを更新しなければならない（MUST）
+
+### コンプライアンス確認
+
+- すべてのPRは原則への準拠を確認しなければならない（MUST）
+- 原則からの逸脱は文書化され、正当な理由がなければならない（MUST）
+- 定期的なコンプライアンスレビューを実施すべきである（SHOULD）
+
+**Version**: 1.0.0 | **Ratified**: 2025-12-04 | **Last Amended**: 2025-12-04
