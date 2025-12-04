@@ -1,0 +1,638 @@
+# Blog API & Auth - OpenAPI 3.0 仕様
+
+openapi: 3.0.3
+info:
+  title: ブログ記事管理・JWT認証API
+  description: |
+    ブログ記事管理機能とJWT認証機能を提供するRESTful API。
+    
+    ## 認証
+    保護されたエンドポイントにはJWTアクセストークンが必要です。
+    `Authorization: Bearer <access_token>` ヘッダーを設定してください。
+    
+    ## レート制限
+    認証エンドポイント（/api/v1/auth/*）は1分あたり5リクエストに制限されています。
+  version: 1.0.0
+  contact:
+    name: API Support
+
+servers:
+  - url: http://localhost:3000
+    description: 開発サーバー
+
+tags:
+  - name: auth
+    description: 認証関連エンドポイント
+  - name: posts
+    description: 記事管理エンドポイント
+
+paths:
+  # ==================== 認証エンドポイント ====================
+  /api/v1/auth/register:
+    post:
+      tags:
+        - auth
+      summary: 新規ユーザー登録
+      description: メールアドレス、パスワード、名前で新規ユーザーを登録します。
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            example:
+              email: user@example.com
+              password: Password123
+              name: 山田太郎
+      responses:
+        '201':
+          description: ユーザー登録成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '409':
+          description: メールアドレス重複
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: レート制限超過
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/auth/login:
+    post:
+      tags:
+        - auth
+      summary: ログイン
+      description: メールアドレスとパスワードで認証し、トークンを取得します。
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              email: user@example.com
+              password: Password123
+      responses:
+        '200':
+          description: ログイン成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          description: 認証失敗
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: レート制限超過
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/auth/refresh:
+    post:
+      tags:
+        - auth
+      summary: トークン更新
+      description: リフレッシュトークンを使用して新しいアクセストークンを取得します。
+      operationId: refreshToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '200':
+          description: トークン更新成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '401':
+          description: 無効または期限切れのリフレッシュトークン
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: レート制限超過
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/auth/logout:
+    post:
+      tags:
+        - auth
+      summary: ログアウト
+      description: リフレッシュトークンを無効化してログアウトします。
+      operationId: logoutUser
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+      responses:
+        '200':
+          description: ログアウト成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          description: 未認証
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ==================== 記事エンドポイント ====================
+  /api/v1/posts:
+    get:
+      tags:
+        - posts
+      summary: 記事一覧取得
+      description: |
+        公開された記事の一覧を取得します。
+        ページネーション、フィルタリング、ソートをサポートします。
+      operationId: getPosts
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+        - $ref: '#/components/parameters/StatusParam'
+        - $ref: '#/components/parameters/SortParam'
+      responses:
+        '200':
+          description: 記事一覧取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostListResponse'
+
+    post:
+      tags:
+        - posts
+      summary: 記事作成
+      description: 新しいブログ記事を作成します。認証必須。
+      operationId: createPost
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostRequest'
+            example:
+              title: はじめてのブログ記事
+              content: これは記事の本文です。
+              status: draft
+      responses:
+        '201':
+          description: 記事作成成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '400':
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          description: 未認証
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/posts/{id}:
+    get:
+      tags:
+        - posts
+      summary: 記事詳細取得
+      description: 指定されたIDの記事詳細を取得します。
+      operationId: getPostById
+      parameters:
+        - $ref: '#/components/parameters/PostIdParam'
+      responses:
+        '200':
+          description: 記事詳細取得成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '400':
+          description: 不正なID形式
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: 記事が見つからない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags:
+        - posts
+      summary: 記事更新
+      description: |
+        指定されたIDの記事を更新します。
+        認証必須。自分の記事のみ更新可能（adminは全記事更新可能）。
+      operationId: updatePost
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PostIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePostRequest'
+      responses:
+        '200':
+          description: 記事更新成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '400':
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '401':
+          description: 未認証
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 権限なし
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: 記事が見つからない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - posts
+      summary: 記事削除
+      description: |
+        指定されたIDの記事を削除します。
+        認証必須。自分の記事のみ削除可能（adminは全記事削除可能）。
+        物理削除のため復元不可。
+      operationId: deletePost
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PostIdParam'
+      responses:
+        '204':
+          description: 記事削除成功
+        '401':
+          description: 未認証
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: 権限なし
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: 記事が見つからない
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWTアクセストークン
+
+  parameters:
+    PostIdParam:
+      name: id
+      in: path
+      required: true
+      description: 記事ID（UUID形式）
+      schema:
+        type: string
+        format: uuid
+        example: 550e8400-e29b-41d4-a716-446655440000
+
+    PageParam:
+      name: page
+      in: query
+      description: ページ番号（1から開始）
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 1
+
+    LimitParam:
+      name: limit
+      in: query
+      description: 1ページあたりの件数
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+        example: 20
+
+    StatusParam:
+      name: status
+      in: query
+      description: ステータスでフィルタリング
+      schema:
+        type: string
+        enum:
+          - draft
+          - published
+        example: published
+
+    SortParam:
+      name: sort
+      in: query
+      description: ソート順（field:direction形式）
+      schema:
+        type: string
+        default: createdAt:desc
+        example: createdAt:desc
+
+  schemas:
+    # ==================== リクエストスキーマ ====================
+    RegisterRequest:
+      type: object
+      required:
+        - email
+        - password
+        - name
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: メールアドレス
+        password:
+          type: string
+          minLength: 8
+          description: パスワード（8文字以上、英数字を含む）
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: 表示名
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: メールアドレス
+        password:
+          type: string
+          description: パスワード
+
+    RefreshRequest:
+      type: object
+      required:
+        - refreshToken
+      properties:
+        refreshToken:
+          type: string
+          description: リフレッシュトークン
+
+    LogoutRequest:
+      type: object
+      required:
+        - refreshToken
+      properties:
+        refreshToken:
+          type: string
+          description: 無効化するリフレッシュトークン
+
+    CreatePostRequest:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: 記事タイトル
+        content:
+          type: string
+          minLength: 1
+          maxLength: 65536
+          description: 記事本文（最大64KB）
+        status:
+          type: string
+          enum:
+            - draft
+            - published
+          default: draft
+          description: 公開状態
+
+    UpdatePostRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: 記事タイトル
+        content:
+          type: string
+          minLength: 1
+          maxLength: 65536
+          description: 記事本文（最大64KB）
+        status:
+          type: string
+          enum:
+            - draft
+            - published
+          description: 公開状態
+
+    # ==================== レスポンススキーマ ====================
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ユーザーID
+        email:
+          type: string
+          format: email
+          description: メールアドレス
+        name:
+          type: string
+          description: 表示名
+        role:
+          type: string
+          enum:
+            - user
+            - admin
+          description: ユーザーロール
+        createdAt:
+          type: string
+          format: date-time
+          description: 登録日時
+
+    TokenResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: JWTアクセストークン（有効期限1時間）
+        refreshToken:
+          type: string
+          description: リフレッシュトークン（有効期限7日間）
+        expiresIn:
+          type: integer
+          description: アクセストークン有効期限（秒）
+          example: 3600
+
+    PostResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: 記事ID
+        title:
+          type: string
+          description: 記事タイトル
+        content:
+          type: string
+          description: 記事本文
+        author:
+          type: string
+          description: 著者名
+        status:
+          type: string
+          enum:
+            - draft
+            - published
+          description: 公開状態
+        createdAt:
+          type: string
+          format: date-time
+          description: 作成日時
+        updatedAt:
+          type: string
+          format: date-time
+          description: 更新日時
+
+    PostListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostResponse'
+        pagination:
+          type: object
+          properties:
+            page:
+              type: integer
+              description: 現在のページ番号
+            limit:
+              type: integer
+              description: 1ページあたりの件数
+            total:
+              type: integer
+              description: 総件数
+            totalPages:
+              type: integer
+              description: 総ページ数
+
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: メッセージ
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: エラーコード
+        message:
+          type: string
+          description: エラーメッセージ
+
+    ValidationError:
+      type: object
+      properties:
+        error:
+          type: string
+          description: エラーコード
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          description: エラーメッセージ
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: フィールド名
+              message:
+                type: string
+                description: エラー詳細
