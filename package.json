@@ -1,0 +1,61 @@
+{
+  "name": "speckit-trial-multi-api",
+  "version": "1.0.0",
+  "description": "ブログ記事管理・JWT認証APIサービス",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write src/",
+    "migrate": "node migrations/runner.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaisukeAsada/speckit-trial-multi-api.git"
+  },
+  "keywords": [
+    "blog",
+    "api",
+    "jwt",
+    "authentication",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/DaisukeAsada/speckit-trial-multi-api/issues"
+  },
+  "homepage": "https://github.com/DaisukeAsada/speckit-trial-multi-api#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "better-sqlite3": "^12.5.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "express-validator": "^7.3.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.16.3",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.28.5",
+    "babel-jest": "^30.2.0",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.11",
+    "prettier": "^3.7.4",
+    "supertest": "^7.1.4"
+  }
+}

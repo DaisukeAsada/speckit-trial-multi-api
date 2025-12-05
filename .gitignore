@@ -1,0 +1,37 @@
+# 依存関係
+node_modules/
+
+# ビルド出力
+dist/
+build/
+
+# テストカバレッジ
+coverage/
+
+# 環境変数ファイル
+.env
+.env.local
+.env.*.local
+
+# ログファイル
+*.log
+npm-debug.log*
+
+# SQLiteデータベース（開発用）
+data/*.db
+
+# IDE・エディタ
+.vscode/
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS固有
+.DS_Store
+Thumbs.db
+
+# 一時ファイル
+*.tmp
+*.temp

@@ -19,12 +19,12 @@
 
 **Purpose**: プロジェクト構造とツール設定の初期化
 
-- [ ] T001 Create project structure per implementation plan in plan.md
-- [ ] T002 Initialize Node.js project with package.json and npm dependencies
-- [ ] T003 [P] Configure ESLint and Prettier in .eslintrc.js and .prettierrc
-- [ ] T004 [P] Configure Jest in jest.config.js
-- [ ] T005 [P] Create .env.example with environment variables template
-- [ ] T006 [P] Create .gitignore for Node.js project
+- [X] T001 Create project structure per implementation plan in plan.md
+- [X] T002 Initialize Node.js project with package.json and npm dependencies
+- [X] T003 [P] Configure ESLint and Prettier in .eslintrc.js and .prettierrc
+- [X] T004 [P] Configure Jest in jest.config.js
+- [X] T005 [P] Create .env.example with environment variables template
+- [X] T006 [P] Create .gitignore for Node.js project
 
 ---
 
@@ -34,18 +34,18 @@
 
 **⚠️ CRITICAL**: このフェーズが完了するまでユーザーストーリーの実装は開始できません
 
-- [ ] T007 Create environment configuration in src/config/index.js
-- [ ] T008 Create SQLite database connection in src/config/database.js
-- [ ] T009 [P] Create database migration runner in migrations/index.js
-- [ ] T010 [P] Create User model and migration in src/models/User.js and migrations/001_create_users.js
-- [ ] T011 [P] Create Post model and migration in src/models/Post.js and migrations/002_create_posts.js
-- [ ] T012 [P] Create RefreshToken model and migration in src/models/RefreshToken.js and migrations/003_create_refresh_tokens.js
-- [ ] T013 Create error handler middleware in src/middlewares/errorHandler.js
-- [ ] T014 [P] Create logger utility in src/utils/logger.js
-- [ ] T015 [P] Create common validators in src/utils/validators.js
-- [ ] T016 Create Express app setup in src/app.js
-- [ ] T017 Create server entry point in src/server.js
-- [ ] T018 Create test setup in tests/setup.js
+- [X] T007 Create environment configuration in src/config/index.js
+- [X] T008 Create SQLite database connection in src/config/database.js
+- [X] T009 [P] Create database migration runner in migrations/index.js
+- [X] T010 [P] Create User model and migration in src/models/User.js and migrations/001_create_users.js
+- [X] T011 [P] Create Post model and migration in src/models/Post.js and migrations/002_create_posts.js
+- [X] T012 [P] Create RefreshToken model and migration in src/models/RefreshToken.js and migrations/003_create_refresh_tokens.js
+- [X] T013 Create error handler middleware in src/middlewares/errorHandler.js
+- [X] T014 [P] Create logger utility in src/utils/logger.js
+- [X] T015 [P] Create common validators in src/utils/validators.js
+- [X] T016 Create Express app setup in src/app.js
+- [X] T017 Create server entry point in src/server.js
+- [X] T018 Create test setup in tests/setup.js
 
 **Checkpoint**: 基盤準備完了 - ユーザーストーリー実装開始可能
 
@@ -59,15 +59,15 @@
 
 ### Implementation for User Story 1
 
-- [ ] T019 [US1] Implement password hashing utility in src/utils/password.js
-- [ ] T020 [US1] Implement JWT token utility in src/utils/jwt.js
-- [ ] T021 [US1] Implement rate limiting middleware in src/middlewares/rateLimit.js
-- [ ] T022 [US1] Implement authentication middleware in src/middlewares/auth.js
-- [ ] T023 [US1] Implement validation middleware in src/middlewares/validate.js
-- [ ] T024 [US1] Implement AuthService (register, login) with auth event logging (FR-024) in src/services/authService.js
-- [ ] T025 [US1] Implement auth routes (register, login) in src/routes/authRoutes.js
-- [ ] T026 [US1] Write integration tests for register endpoint in tests/integration/auth.register.test.js
-- [ ] T027 [US1] Write integration tests for login endpoint in tests/integration/auth.login.test.js
+- [X] T019 [US1] Implement password hashing utility in src/utils/password.js
+- [X] T020 [US1] Implement JWT token utility in src/utils/jwt.js
+- [X] T021 [US1] Implement rate limiting middleware in src/middlewares/rateLimit.js
+- [X] T022 [US1] Implement authentication middleware in src/middlewares/auth.js
+- [X] T023 [US1] Implement validation middleware in src/middlewares/validate.js
+- [X] T024 [US1] Implement AuthService (register, login) with auth event logging (FR-024) in src/services/authService.js
+- [X] T025 [US1] Implement auth routes (register, login) in src/routes/authRoutes.js
+- [X] T026 [US1] Write integration tests for register endpoint in tests/integration/auth.register.test.js
+- [X] T027 [US1] Write integration tests for login endpoint in tests/integration/auth.login.test.js
 
 **Checkpoint**: ユーザー登録とログインが独立して動作・テスト可能
 
@@ -81,10 +81,10 @@
 
 ### Implementation for User Story 2
 
-- [ ] T028 [US2] Implement PostService (create) in src/services/postService.js
-- [ ] T029 [US2] Implement post routes (create) in src/routes/postRoutes.js
-- [ ] T030 [US2] Add post validation rules in src/middlewares/validate.js
-- [ ] T031 [US2] Write integration tests for create post endpoint in tests/integration/posts.create.test.js
+- [X] T028 [US2] Implement PostService (create) in src/services/postService.js
+- [X] T029 [US2] Implement post routes (create) in src/routes/postRoutes.js
+- [X] T030 [US2] Add post validation rules in src/middlewares/validate.js
+- [X] T031 [US2] Write integration tests for create post endpoint in tests/integration/posts.create.test.js
 
 **Checkpoint**: 記事作成が独立して動作・テスト可能
 
@@ -98,9 +98,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T032 [US3] Implement PostService (list with pagination, filter, sort) in src/services/postService.js
-- [ ] T033 [US3] Implement post routes (list) in src/routes/postRoutes.js
-- [ ] T034 [US3] Write integration tests for list posts endpoint in tests/integration/posts.list.test.js
+- [X] T032 [US3] Implement PostService (list with pagination, filter, sort) in src/services/postService.js
+- [X] T033 [US3] Implement post routes (list) in src/routes/postRoutes.js
+- [X] T034 [US3] Write integration tests for list posts endpoint in tests/integration/posts.list.test.js
 
 **Checkpoint**: 記事一覧取得が独立して動作・テスト可能
 
@@ -114,9 +114,9 @@
 
 ### Implementation for User Story 4
 
-- [ ] T035 [US4] Implement PostService (getById) in src/services/postService.js
-- [ ] T036 [US4] Implement post routes (get by id) in src/routes/postRoutes.js
-- [ ] T037 [US4] Write integration tests for get post endpoint in tests/integration/posts.get.test.js
+- [X] T035 [US4] Implement PostService (getById) in src/services/postService.js
+- [X] T036 [US4] Implement post routes (get by id) in src/routes/postRoutes.js
+- [X] T037 [US4] Write integration tests for get post endpoint in tests/integration/posts.get.test.js
 
 **Checkpoint**: 記事詳細取得が独立して動作・テスト可能
 
@@ -130,11 +130,11 @@
 
 ### Implementation for User Story 5
 
-- [ ] T038 [US5] Implement authorization middleware in src/middlewares/authorize.js
-- [ ] T039 [US5] Implement PostService (update, delete) in src/services/postService.js
-- [ ] T040 [US5] Implement post routes (update, delete) in src/routes/postRoutes.js
-- [ ] T041 [US5] Write integration tests for update post endpoint in tests/integration/posts.update.test.js
-- [ ] T042 [US5] Write integration tests for delete post endpoint in tests/integration/posts.delete.test.js
+- [X] T038 [US5] Implement authorization middleware in src/middlewares/authorize.js
+- [X] T039 [US5] Implement PostService (update, delete) in src/services/postService.js
+- [X] T040 [US5] Implement post routes (update, delete) in src/routes/postRoutes.js
+- [X] T041 [US5] Write integration tests for update post endpoint in tests/integration/posts.update.test.js
+- [X] T042 [US5] Write integration tests for delete post endpoint in tests/integration/posts.delete.test.js
 
 **Checkpoint**: 記事編集・削除が独立して動作・テスト可能
 
@@ -148,10 +148,10 @@
 
 ### Implementation for User Story 6
 
-- [ ] T043 [US6] Implement AuthService (refresh, logout) in src/services/authService.js
-- [ ] T044 [US6] Implement auth routes (refresh, logout) in src/routes/authRoutes.js
-- [ ] T045 [US6] Write integration tests for refresh endpoint in tests/integration/auth.refresh.test.js
-- [ ] T046 [US6] Write integration tests for logout endpoint in tests/integration/auth.logout.test.js
+- [X] T043 [US6] Implement AuthService (refresh, logout) in src/services/authService.js
+- [X] T044 [US6] Implement auth routes (refresh, logout) in src/routes/authRoutes.js
+- [X] T045 [US6] Write integration tests for refresh endpoint in tests/integration/auth.refresh.test.js
+- [X] T046 [US6] Write integration tests for logout endpoint in tests/integration/auth.logout.test.js
 
 **Checkpoint**: トークン更新・ログアウトが独立して動作・テスト可能
 
@@ -161,12 +161,12 @@
 
 **Purpose**: 複数ユーザーストーリーに影響する改善
 
-- [ ] T047 [P] Create README.md with project documentation
-- [ ] T048 [P] Add JSDoc comments to all service files
-- [ ] T049 [P] Add JSDoc comments to all middleware files
-- [ ] T050 Run all tests and ensure 80%+ coverage
-- [ ] T051 Run quickstart.md validation
-- [ ] T052 Security review and hardening
+- [X] T047 [P] Create README.md with project documentation
+- [X] T048 [P] Add JSDoc comments to all service files
+- [X] T049 [P] Add JSDoc comments to all middleware files
+- [X] T050 Run all tests and ensure 80%+ coverage
+- [X] T051 Run quickstart.md validation
+- [X] T052 Security review and hardening
 
 ---
 

@@ -1,0 +1,17 @@
+# ESLint無視パターン
+
+# 依存関係
+node_modules/
+
+# ビルド出力
+dist/
+build/
+
+# カバレッジ
+coverage/
+
+# ミニファイ済みファイル
+*.min.js
+
+# マイグレーションファイル（SQLが含まれる）
+migrations/
